@@ -1,12 +1,15 @@
 import express from 'express';
 import type { Request, Response } from 'express';
 import cors from 'cors';
+import DB from './db/db.ts';
+
+await DB.connect();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
 app.use(cors({
-	origin: 'http://localhost:3001',
+	origin: `http://localhost:${process.env.ALLOWED_ORIGIN_PORT}`,
 }));
 
 app.get('/', (req: Request, res: Response) => {

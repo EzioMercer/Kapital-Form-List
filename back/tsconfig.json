@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true
+    "module": "NodeNext",
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true
   }
 }

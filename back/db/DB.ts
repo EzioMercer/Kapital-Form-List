@@ -28,10 +28,12 @@ class DB {
 		return Forms.find({}).exec();
 	}
 
-	createForm(formData) {
-		const form = new Forms(formData);
+	async createForm(formData) {
+		const result = await Forms.findOne({ name: formData.name });
 
-		return form.save();
+		if (result !== null) throw new Error('Form with this name already exists!');
+
+		return new Forms(formData).save();
 	}
 }
 

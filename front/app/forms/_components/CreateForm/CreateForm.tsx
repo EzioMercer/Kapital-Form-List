@@ -11,28 +11,29 @@ const CreateForm = () => {
 
 	return (
 		<>
-			<button onClick={() => setIsOpen(true)}>Create Form</button>
-			{
-				isOpen && (
-					<Modal>
-						<Form onSubmit={createForm}>
-							<label>
-								<input type="text" placeholder="Name" name="name" />
-							</label>
+			<button onClick={ () => setIsOpen(true) }>Create Form</button>
+			<Modal isOpen={ isOpen } onClose={ () => setIsOpen(false) } title={ 'Create Form' }>
+				<Form
+					onSubmit={ json => {
+						createForm(json)
+							.then(() => setIsOpen(false));
+					} }
+					className={ styles.form }>
+					<label>
+						<input type="text" placeholder="Name" name="name" />
+					</label>
 
-							<label>
-								<input type="checkbox" name="isVisible" defaultChecked={true} /> Visible
-							</label>
+					<label>
+						<input type="checkbox" name="isVisible" defaultChecked={ true } /> Visible
+					</label>
 
-							<label>
-								<input type="checkbox" name="isReadonly"/> Readonly
-							</label>
+					<label>
+						<input type="checkbox" name="isReadonly" /> Readonly
+					</label>
 
-							<button>Create</button>
-						</Form>
-					</Modal>
-				)
-			}
+					<button>Create</button>
+				</Form>
+			</Modal>
 		</>
 	)
 }

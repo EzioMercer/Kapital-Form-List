@@ -1,5 +1,6 @@
 const enum ErrorCodes {
-	FORM_ALREADY_EXISTS = 409,
+	BAD_REQUEST = 400,
+	CONFLICT = 409,
 }
 
 export default ErrorCodes;

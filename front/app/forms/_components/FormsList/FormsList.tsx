@@ -1,7 +1,7 @@
 'use client';
 
 import FormsListItem from './FormsListItem/FormsListItem';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { use } from 'react';
 import { init } from '@/redux/slices/formsListSlice';
 import FormType from '@/types/FormType';
@@ -16,10 +16,14 @@ const FormsList = ({ formsPromise }: Props) => {
 
     dispatch(init(forms));
 
+    const formsList = useAppSelector(state => state.formsList);
+
+    console.log(formsList);
+
     return (
         <ul>
             {
-                forms.map(form => <FormsListItem key={ form.id } { ...form } />)
+                formsList.map(formsListItem => <FormsListItem key={ formsListItem._id } { ...formsListItem } />)
             }
         </ul>
     );

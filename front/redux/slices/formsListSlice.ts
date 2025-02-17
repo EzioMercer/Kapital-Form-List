@@ -7,11 +7,14 @@ const formsListSlice = createSlice({
     name: 'forms-list',
     initialState,
     reducers: {
-        init(state, action: PayloadAction<FormType[]>) {
+        init(_state, action: PayloadAction<FormType[]>) {
             return action.payload;
+        },
+        addForm(state, action: PayloadAction<FormType>) {
+            state.push(action.payload);
         }
     }
 });
 
-export const { init } = formsListSlice.actions;
+export const { init, addForm } = formsListSlice.actions;
 export default formsListSlice.reducer;

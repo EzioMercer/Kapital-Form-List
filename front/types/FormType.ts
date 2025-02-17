@@ -1,5 +1,5 @@
 type FormType = {
-    id: string,
+    _id: string,
     name: string,
     isVisible: boolean,
     isReadOnly: boolean,

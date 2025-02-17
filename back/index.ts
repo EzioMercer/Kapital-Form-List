@@ -16,8 +16,8 @@ app.use(
 	}));
 
 app.get('/forms', async (req: Request, res: Response) => {
-	await new Promise(r => setTimeout(r, 10000));
-	
+	// await new Promise(r => setTimeout(r, 10000));
+
 	res.send(await DB.getAllForms());
 });
 
@@ -34,7 +34,7 @@ app.post('/form', async (req: Request, res: Response) => {
 		res.send(newForm);
 	} catch (error) {
 		res.statusMessage = error.message;
-		res.status(ErrorCodes.FORM_ALREADY_EXISTS).end();
+		res.status(error.cause).end();
 	}
 });
 

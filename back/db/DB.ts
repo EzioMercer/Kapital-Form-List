@@ -1,6 +1,8 @@
 import type { Mongoose } from 'mongoose';
 import mongoose from 'mongoose';
 import Forms from './models/Forms.ts';
+import ErrorCodes from '../utils/ErrorCodes.ts';
+import checkFormName from '../utils/checkFormName.ts';
 
 class DB {
 	private isConnected: boolean = false;
@@ -29,9 +31,20 @@ class DB {
 	}
 
 	async createForm(formData) {
-		const result = await Forms.findOne({ name: formData.name });
+		const name = formData.name;
+		const checkResults = checkFormName(name);
 
-		if (result !== null) throw new Error('Form with this name already exists!');
+		if (checkResults.isValid === false) {
+			throw new Error(checkResults.message, {
+				cause: checkResults.code
+			})
+		}
+
+		const result = await Forms.findOne({ name });
+
+		if (result !== null) throw new Error('Form with this name already exists!', {
+			cause: ErrorCodes.CONFLICT
+		});
 
 		return new Forms(formData).save();
 	}

@@ -5,19 +5,29 @@ import { useState } from 'react';
 import Modal from '@/app/_components/Modal/Modal';
 import Form from '@/app/_components/Form/Form';
 import { createForm } from '@/API';
+import { useAppDispatch } from '@/redux/hooks';
+import { addForm } from '@/redux/slices/formsListSlice';
+import formDataToJSON from '@/utils/formDataToJSON';
 
 const CreateForm = () => {
+    const dispatch = useAppDispatch();
     const [isOpen, setIsOpen] = useState(false);
+
+    const handleSubmit = (json: ReturnType<typeof formDataToJSON>) => {
+        createForm(json)
+            .then(newForm => {
+                console.log(newForm);
+                dispatch(addForm(newForm));
+                setIsOpen(false);
+            });
+    };
 
     return (
         <>
             <button onClick={ () => setIsOpen(true) }>Create Form</button>
             <Modal isOpen={ isOpen } onClose={ () => setIsOpen(false) } title={ 'Create Form' }>
                 <Form
-                    onSubmit={ json => {
-                        createForm(json)
-                            .then(() => setIsOpen(false));
-                    } }
+                    onSubmit={ handleSubmit }
                     className={ styles.form }>
                     <label>
                         <input type="text" placeholder="Name" name="name" />

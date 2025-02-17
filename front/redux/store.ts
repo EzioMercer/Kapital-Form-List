@@ -1,7 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+import formsList from './slices/formsListSlice';
 
 export const makeStore = () => configureStore({
-    reducer: {},
+    reducer: {
+        formsList,
+    },
 });
 
 export type AppStore = ReturnType<typeof makeStore>;

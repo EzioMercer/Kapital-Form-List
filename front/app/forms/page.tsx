@@ -1,20 +1,24 @@
-import { getForms } from '@/API';
+import styles from './FormsListPage.module.scss';
 import FormsList from '@/app/forms/_components/FormsList/FormsList';
 import CreateForm from '@/app/forms/_components/CreateForm/CreateForm';
+import { getForms } from '@/API';
+import { Suspense } from 'react';
 
 export const metadata = {
     title: 'Form List',
 };
 
-const Home = async () => {
-    const formsList = await getForms();
+const FormsListPage = () => {
+    const formsPromise = getForms();
 
     return (
-        <>
+        <div className={styles.page}>
             <CreateForm />
-            <FormsList items={ formsList } />
-        </>
+            <Suspense fallback={ 'Loading...' }>
+                <FormsList formsPromise={ formsPromise } />
+            </Suspense>
+        </div>
     );
 };
 
-export default Home;
+export default FormsListPage;

@@ -16,6 +16,8 @@ app.use(
 	}));
 
 app.get('/forms', async (req: Request, res: Response) => {
+	await new Promise(r => setTimeout(r, 10000));
+	
 	res.send(await DB.getAllForms());
 });
 

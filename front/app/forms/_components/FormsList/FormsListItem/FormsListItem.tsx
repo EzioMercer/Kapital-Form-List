@@ -7,14 +7,21 @@ type Props = FormType;
 const FormsListItem = ({ _id, name }: Props) => {
     const dispatch = useAppDispatch();
 
-    const handleClick = () => {
+    const handleDelete = () => {
+        const shouldDelete = confirm('Are you sure?');
+
+        if (!shouldDelete) return;
+
         dispatch(removeForm(_id));
     };
+
+    const handleEdit = () => {};
 
     return (
         <div>
             <span>{name}</span>
-            <button onClick={handleClick}>Delete</button>
+            <button onClick={handleDelete}>Delete</button>
+            <button onClick={handleEdit}>Edit Form</button>
         </div>
     );
 };

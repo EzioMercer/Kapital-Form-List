@@ -63,6 +63,14 @@ class DB {
     }
 
     async updateForm(formData: FormType) {
+        const checkResults = checkFormName(formData.name);
+
+        if (checkResults.isValid === false) {
+            throw new Error(checkResults.message, {
+                cause: checkResults.code,
+            });
+        }
+
         const result = await Forms.findByIdAndUpdate(formData._id, formData, { new: true });
 
         if (result === null) {

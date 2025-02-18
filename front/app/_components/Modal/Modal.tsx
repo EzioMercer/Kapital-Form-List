@@ -9,7 +9,7 @@ type ModalProps = {
     isOpen: boolean;
     onClose: () => void;
     children: ReactNode;
-}
+};
 
 const Modal = ({ title, isOpen, onClose, children }: ModalProps) => {
     useEffect(() => {
@@ -24,24 +24,34 @@ const Modal = ({ title, isOpen, onClose, children }: ModalProps) => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
-    return isOpen && createPortal(
-        (
-            <div className={ styles.modal }>
+    return (
+        isOpen &&
+        createPortal(
+            <div
+                className={ styles.modal }
+                onClick={ (e) => {
+                    if (e.currentTarget === e.target) onClose();
+                } }
+            >
                 <div className={ styles.content }>
                     <div className={ styles.header }>
-                        <div className={ styles.title }>{ title }</div>
-                        <div className={ styles['close-btn'] } tabIndex={ 0 } onClick={ onClose } onKeyDown={ e => {
-                            if (e.key === 'Enter' || e.key === ' ') onClose();
-                        } } role="button"></div>
+                        <div className={ styles.title }>{title}</div>
+                        <div
+                            className={ styles['close-btn'] }
+                            tabIndex={ 0 }
+                            onClick={ onClose }
+                            onKeyDown={ (e) => {
+                                if (e.key === 'Enter' || e.key === ' ') onClose();
+                            } }
+                            role="button"
+                        ></div>
                     </div>
                     <hr />
-                    <div className={ styles.body }>
-                        { children }
-                    </div>
+                    <div className={ styles.body }>{children}</div>
                 </div>
-            </div>
-        ),
-        document.body,
+            </div>,
+            document.body,
+        )
     );
 };
 export default Modal;

@@ -20,6 +20,8 @@ const eslintConfig = [
                     allow: ['warn', 'error'],
                 },
             ],
+            'object-curly-spacing': ['warn', 'always'],
+            'react/jsx-curly-spacing': ['warn', 'always'],
             'react-hooks/exhaustive-deps': 'off',
             'no-unused-vars': 1,
             'unused-imports/no-unused-imports': 1,

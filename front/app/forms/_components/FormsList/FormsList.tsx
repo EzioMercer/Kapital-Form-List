@@ -8,27 +8,27 @@ import FormType from '@/types/FormType';
 import useMount from '@/utils/hooks/useMount';
 
 type Props = {
-	formsPromise: Promise<FormType[]>
-}
+    formsPromise: Promise<FormType[]>;
+};
 
 const FormsList = ({ formsPromise }: Props) => {
-	const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
 
-	useMount(() => {
-		const forms = use(formsPromise);
+    useMount(() => {
+        const forms = use(formsPromise);
 
-		dispatch(init(forms));
-	})
+        dispatch(init(forms));
+    });
 
-	const formsList = useAppSelector(state => state.formsList);
+    const formsList = useAppSelector((state) => state.formsList);
 
-	return (
-		<ul>
-			{
-				formsList.map(formsListItem => <FormsListItem key={ formsListItem._id } { ...formsListItem } />)
-			}
-		</ul>
-	);
+    return (
+        <ul>
+            {formsList.map((formsListItem) => (
+                <FormsListItem key={formsListItem._id} {...formsListItem} />
+            ))}
+        </ul>
+    );
 };
 
 export default FormsList;

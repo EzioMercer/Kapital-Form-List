@@ -71,6 +71,14 @@ class DB {
             });
         }
 
+        const oldForm = await Forms.findOne({ name: formData.name });
+
+        if (oldForm !== null) {
+            throw new Error('Form with this name already exists!', {
+                cause: ErrorCodes.CONFLICT,
+            });
+        }
+
         const result = await Forms.findByIdAndUpdate(formData._id, formData, { new: true });
 
         if (result === null) {

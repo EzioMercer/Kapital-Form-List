@@ -44,8 +44,6 @@ const formsListSlice = createSlice({
                 if (index !== -1) {
                     state[index] = payload;
                 }
-
-                console.log(index, payload, [...state]);
             })
             .addCase(editForm.rejected, (_state, { error }) => {
                 alert(error.message);

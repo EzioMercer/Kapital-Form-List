@@ -50,9 +50,7 @@ app.delete('/form/:id', async (req: Request, res: Response) => {
     }
 });
 
-app.patch('/form/:id', async (req: Request, res: Response) => {
-    const formId = req.params.id;
-
+app.patch('/form', async (req: Request, res: Response) => {
     try {
         const updatedForm = await DB.updateForm(req.body);
 

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import FormType from '@/types/FormType';
 import { createForm, deleteForm, updateForm } from '@/API';
 
@@ -10,6 +10,17 @@ export const removeForm = createAsyncThunk('removeForm', deleteForm);
 
 export const editForm = createAsyncThunk('editForm', updateForm);
 
+const handleRejected = <T, K>(
+    asyncThunk: ReturnType<typeof createAsyncThunk<T, K>>,
+    builder: ActionReducerMapBuilder<FormType[]>,
+) => {
+    builder.addCase(asyncThunk.rejected, (_, { error }) => {
+        alert(error.message);
+
+        throw new Error(error.message);
+    });
+};
+
 const formsListSlice = createSlice({
     name: 'forms-list',
     initialState,
@@ -19,37 +30,28 @@ const formsListSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder
-            .addCase(addForm.fulfilled, (state, { payload }) => {
+        handleRejected(
+            addForm,
+            builder.addCase(addForm.fulfilled, (state, { payload }) => {
                 state.push(payload);
-            })
-            .addCase(addForm.rejected, (_, { error }) => {
-                alert(error.message);
+            }),
+        );
 
-                throw new Error(error.message);
-            });
+        handleRejected(
+            removeForm,
+            builder.addCase(removeForm.fulfilled, (state, { payload }) => state.filter((form) => form._id !== payload)),
+        );
 
-        builder
-            .addCase(removeForm.fulfilled, (state, { payload }) => state.filter((form) => form._id !== payload))
-            .addCase(removeForm.rejected, (_state, { error }) => {
-                alert(error.message);
-
-                throw new Error(error.message);
-            });
-
-        builder
-            .addCase(editForm.fulfilled, (state, { payload }) => {
+        handleRejected(
+            editForm,
+            builder.addCase(editForm.fulfilled, (state, { payload }) => {
                 const index = state.findIndex((form) => form._id === payload._id);
 
                 if (index !== -1) {
                     state[index] = payload;
                 }
-            })
-            .addCase(editForm.rejected, (_state, { error }) => {
-                alert(error.message);
-
-                throw new Error(error.message);
-            });
+            }),
+        );
     },
 });
 

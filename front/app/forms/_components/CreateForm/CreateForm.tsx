@@ -4,7 +4,6 @@ import styles from './CreateForm.module.scss';
 import { useState } from 'react';
 import Modal from '@/app/_components/Modal/Modal';
 import Form from '@/app/_components/Form/Form';
-import { createForm } from '@/API';
 import { useAppDispatch } from '@/redux/hooks';
 import { addForm } from '@/redux/slices/formsListSlice';
 import formDataToJSON from '@/utils/formDataToJSON';
@@ -14,12 +13,8 @@ const CreateForm = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleSubmit = (json: ReturnType<typeof formDataToJSON>) => {
-        createForm(json)
-            .then(newForm => {
-                console.log(newForm);
-                dispatch(addForm(newForm));
-                setIsOpen(false);
-            });
+        dispatch(addForm(json))
+            .then(() => setIsOpen(false));
     };
 
     return (
@@ -30,7 +25,7 @@ const CreateForm = () => {
                     onSubmit={ handleSubmit }
                     className={ styles.form }>
                     <label>
-                        <input type="text" placeholder="Name" name="name" />
+                        <input autoFocus={true} type="text" placeholder="Name" name="name" />
                     </label>
 
                     <label>

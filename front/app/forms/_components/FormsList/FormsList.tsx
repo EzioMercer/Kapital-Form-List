@@ -5,28 +5,30 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { use } from 'react';
 import { init } from '@/redux/slices/formsListSlice';
 import FormType from '@/types/FormType';
+import useMount from '@/utils/hooks/useMount';
 
 type Props = {
-    formsPromise: Promise<FormType[]>
+	formsPromise: Promise<FormType[]>
 }
 
 const FormsList = ({ formsPromise }: Props) => {
-    const forms = use(formsPromise);
-    const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-    dispatch(init(forms));
+	useMount(() => {
+		const forms = use(formsPromise);
 
-    const formsList = useAppSelector(state => state.formsList);
+		dispatch(init(forms));
+	})
 
-    console.log(formsList);
+	const formsList = useAppSelector(state => state.formsList);
 
-    return (
-        <ul>
-            {
-                formsList.map(formsListItem => <FormsListItem key={ formsListItem._id } { ...formsListItem } />)
-            }
-        </ul>
-    );
+	return (
+		<ul>
+			{
+				formsList.map(formsListItem => <FormsListItem key={ formsListItem._id } { ...formsListItem } />)
+			}
+		</ul>
+	);
 };
 
 export default FormsList;

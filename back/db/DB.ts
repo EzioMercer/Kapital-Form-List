@@ -42,11 +42,23 @@ class DB {
 
 		const result = await Forms.findOne({ name });
 
-		if (result !== null) throw new Error('Form with this name already exists!', {
-			cause: ErrorCodes.CONFLICT
-		});
+		if (result !== null) {
+			throw new Error('Form with this name already exists!', {
+				cause: ErrorCodes.CONFLICT
+			});
+		}
 
 		return new Forms(formData).save();
+	}
+
+	async deleteForm(id: string) {
+		const result = await Forms.findByIdAndDelete( id );
+
+		if (result === null) {
+			throw new Error('Form doesn\'t exists!', {
+				cause: ErrorCodes.NOT_ACCEPTABLE
+			});
+		}
 	}
 }
 

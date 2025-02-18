@@ -2,7 +2,6 @@ import type { Request, Response } from 'express';
 import express from 'express';
 import cors from 'cors';
 import DB from './db/DB.ts';
-import ErrorCodes from './utils/ErrorCodes.ts';
 
 await DB.connect();
 
@@ -16,7 +15,7 @@ app.use(
 	}));
 
 app.get('/forms', async (req: Request, res: Response) => {
-	// await new Promise(r => setTimeout(r, 10000));
+	// await new Promise(r => setTimeout(r, 4096));
 
 	res.send(await DB.getAllForms());
 });
@@ -37,6 +36,19 @@ app.post('/form', async (req: Request, res: Response) => {
 		res.status(error.cause).end();
 	}
 });
+
+app.delete('/form/:id', async (req: Request, res: Response) => {
+	const formId = req.params.id;
+
+	try {
+		await DB.deleteForm(formId);
+
+		res.send(JSON.stringify(formId));
+	} catch (error) {
+		res.statusMessage = error.message;
+		res.status(error.cause).end();
+	}
+})
 
 app.listen(port, () => {
 	console.log(`[server]: Server is running at http://localhost:${ port }`);

@@ -25,10 +25,16 @@ export const deleteForm = (id: FormType['_id']): Promise<FormType['_id']> =>
         method: 'DELETE',
     });
 
-export const updateForm = (data: FormType): Promise<FormType> =>
-    myFetch(`${apiURL}/form`, {
+export const updateFormSettings = ({
+    id,
+    settings,
+}: {
+    id: FormType['_id'];
+    settings: FormType['settings'];
+}): Promise<FormType> =>
+    myFetch(`${apiURL}/form${id}/settings`, {
         method: 'PATCH',
-        body: JSON.stringify(data),
+        body: JSON.stringify(settings),
         headers: {
             'Content-Type': 'application/json',
         },

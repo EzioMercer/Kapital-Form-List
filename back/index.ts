@@ -22,15 +22,17 @@ app.get('/forms', async (req: Request, res: Response) => {
 });
 
 app.post('/form', async (req: Request, res: Response) => {
-    const form = {} as FormType;
+    const formSettings = {} as FormType['settings'];
 
-    form.name = req.body.name ?? '';
-    form.isVisible = (req.body.isVisible && true) ?? false;
-    form.isReadOnly = (req.body.isReadOnly && true) ?? false;
-    form.fields = req.body.fields ?? [];
+    formSettings.name = req.body.name ?? '';
+    formSettings.isVisible = (req.body.isVisible && true) ?? false;
+    formSettings.isReadOnly = (req.body.isReadOnly && true) ?? false;
 
     try {
-        const newForm = await DB.createForm(form);
+        const newForm = await DB.createForm({
+            settings: formSettings,
+            fields: [],
+        });
 
         res.send(newForm);
     } catch (error) {
@@ -52,9 +54,10 @@ app.delete('/form/:id', async (req: Request, res: Response) => {
     }
 });
 
-app.patch('/form', async (req: Request, res: Response) => {
+app.patch('/form/:id/settings', async (req: Request, res: Response) => {
     try {
-        const updatedForm = await DB.updateForm(req.body);
+        const formId = req.params.id;
+        const updatedForm = await DB.updateFormSettings(formId, req.body);
 
         res.send(updatedForm);
     } catch (error) {
@@ -62,6 +65,17 @@ app.patch('/form', async (req: Request, res: Response) => {
         res.status(error.cause).end();
     }
 });
+
+// app.patch('/form/:id/create-field', async (req: Request, res: Response) => {
+//     try {
+//         const updatedForm = await DB.updateForm(req.body);
+//
+//         res.send(updatedForm);
+//     } catch (error) {
+//         res.statusMessage = error.message;
+//         res.status(error.cause).end();
+//     }
+// });
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${ port }`);

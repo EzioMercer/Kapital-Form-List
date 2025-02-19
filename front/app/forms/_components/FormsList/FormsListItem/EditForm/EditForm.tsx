@@ -33,8 +33,10 @@ const EditForm = ({ form }: Props) => {
     const handleEditSubmit = (json: ReturnType<typeof formDataToJSON>) => {
         dispatch(
             editForm({
-                ...form,
-                name: json['name'] as string,
+                id: form._id,
+                settings: {
+                    ...(json as unknown as FormType['settings']),
+                },
             }),
         ).then(() => setShouldShowEditForm(false));
     };
@@ -46,15 +48,15 @@ const EditForm = ({ form }: Props) => {
                 <Form onSubmit={ handleEditSubmit }>
                     <fieldset>
                         <legend>Form settings</legend>
-                        <FormTextInput name={ 'name' } autoFocus={ true } defaultValue={ form.name } />
+                        <FormTextInput name={ 'name' } autoFocus={ true } defaultValue={ form.settings.name } />
 
                         <label>
-                            <input type="checkbox" defaultChecked={ form.isVisible } />
+                            <input type="checkbox" defaultChecked={ form.settings.isVisible } />
                             <span>Visible</span>
                         </label>
 
                         <label>
-                            <input type="checkbox" defaultChecked={ form.isReadOnly } />
+                            <input type="checkbox" defaultChecked={ form.settings.isReadOnly } />
                             <span>Readonly</span>
                         </label>
                     </fieldset>

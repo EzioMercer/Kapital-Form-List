@@ -5,9 +5,7 @@ import Modal from '@core/components/Modal/Modal';
 import FormType from '@/types/FormType';
 import Form from '@core/components/Form/Form';
 import formDataToJSON from '@/utils/formDataToJSON';
-import { editForm } from '@/redux/slices/formsListSlice';
 import { useAppDispatch } from '@/redux/hooks';
-import FormFieldType from '@/types/FormFieldType';
 import FormTextInput from '@core/components/Form/FormTextInput/FormTextInput';
 
 type Props = {
@@ -19,18 +17,18 @@ const AddField = ({ form }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleEditSubmit = (json: ReturnType<typeof formDataToJSON>) => {
-        dispatch(
-            editForm({
-                ...form,
-                fields: [
-                    ...form.fields,
-                    {
-                        ...(json as unknown as FormFieldType),
-                        type: 'text',
-                    },
-                ],
-            }),
-        ).then(() => setIsOpen(false));
+        // dispatch(
+        //     editForm({
+        //         ...form,
+        //         fields: [
+        //             ...form.fields,
+        //             {
+        //                 ...(json as unknown as FormFieldType),
+        //                 type: 'text',
+        //             },
+        //         ],
+        //     }),
+        // ).then(() => setIsOpen(false));
     };
 
     return (

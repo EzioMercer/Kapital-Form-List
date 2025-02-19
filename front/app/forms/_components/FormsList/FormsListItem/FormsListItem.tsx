@@ -9,7 +9,7 @@ type Props = {
 
 const FormsListItem = ({ form }: Props) => (
     <div>
-        <span>{form.name}</span>
+        <span>{form.settings.name}</span>
         <EditForm form={ form } />
         <ShowDetails form={ form } />
         <DeleteForm id={ form._id } />

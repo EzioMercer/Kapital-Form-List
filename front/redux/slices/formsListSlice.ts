@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice, isRejected, PayloadAction } from '@reduxjs/toolkit';
 import FormType from '@/types/FormType';
-import { createForm, deleteForm, updateForm } from '@/API';
+import { createForm, deleteForm, updateFormSettings } from '@/API';
 
 const initialState: FormType[] = [];
 
 export const addForm = createAsyncThunk('addForm', createForm);
 export const removeForm = createAsyncThunk('removeForm', deleteForm);
-export const editForm = createAsyncThunk('editForm', updateForm);
+export const editForm = createAsyncThunk('editForm', updateFormSettings);
 
 const formsListSlice = createSlice({
     name: 'forms-list',

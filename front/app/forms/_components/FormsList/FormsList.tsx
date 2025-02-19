@@ -22,8 +22,6 @@ const FormsList = ({ formsPromise }: Props) => {
 
     const formsList = useAppSelector((state) => state.formsList);
 
-    console.log(formsList);
-
     return (
         <ul>
             {formsList.map((formsListItem) => (

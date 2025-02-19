@@ -7,7 +7,6 @@ export type TextInputType = {
 };
 
 const TextInputSchema = new Schema({
-    _id: String,
     type: {
         type: String,
         default: 'text',

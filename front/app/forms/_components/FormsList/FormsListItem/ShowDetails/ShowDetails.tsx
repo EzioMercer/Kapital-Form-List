@@ -21,15 +21,15 @@ const ShowDetails = ({ form }: Props) => {
             <button onClick={ show }>Show Details</button>
             <Modal title={ 'Edit Form' } isOpen={ isOpen } onClose={ hide }>
                 <Form onSubmit={ () => {} }>
-                    <input type="text" disabled={ true } defaultValue={ form.name } />
+                    <input type="text" disabled={ true } defaultValue={ form.settings.name } />
 
                     <label>
-                        <input type="checkbox" disabled={ true } defaultChecked={ form.isVisible } />
+                        <input type="checkbox" disabled={ true } defaultChecked={ form.settings.isVisible } />
                         <span>Visible</span>
                     </label>
 
                     <label>
-                        <input type="checkbox" disabled={ true } defaultChecked={ form.isReadOnly } />
+                        <input type="checkbox" disabled={ true } defaultChecked={ form.settings.isReadOnly } />
                         <span>Readonly</span>
                     </label>
 

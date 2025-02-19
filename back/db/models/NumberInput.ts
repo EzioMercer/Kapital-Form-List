@@ -7,7 +7,6 @@ export type NumberInputType = {
 };
 
 const NumberInputSchema = new Schema({
-    _id: String,
     type: {
         type: String,
         default: 'number',

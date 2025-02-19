@@ -31,8 +31,8 @@ class DB {
         return Forms.find({}).exec();
     }
 
-    async createForm(formData: FormType) {
-        const name = formData.name;
+    async createForm(formData: Omit<FormType, '_id'>) {
+        const name = formData.settings.name;
         const checkResults = checkFormName(name);
 
         if (checkResults.isValid === false) {
@@ -62,16 +62,8 @@ class DB {
         }
     }
 
-    async updateForm(formData: FormType) {
-        const withSameName = await Forms.findOne({ name: formData.name });
-
-        if (withSameName !== null && !withSameName._id.equals(formData._id)) {
-            throw new Error('Form with this name already exists!', {
-                cause: ErrorCodes.CONFLICT,
-            });
-        }
-
-        const checkResults = checkFormName(formData.name);
+    async updateFormSettings(formId: FormType['_id'], formSettings: FormType['settings']) {
+        const checkResults = checkFormName(formSettings.name);
 
         if (checkResults.isValid === false) {
             throw new Error(checkResults.message, {
@@ -79,7 +71,15 @@ class DB {
             });
         }
 
-        const result = await Forms.findByIdAndUpdate(formData._id, formData, { new: true });
+        const oldForm = await Forms.findOne({ 'settings.name': formSettings.name });
+
+        if (oldForm !== null) {
+            throw new Error('Form with this name already exists!', {
+                cause: ErrorCodes.CONFLICT,
+            });
+        }
+
+        const result = await Forms.findByIdAndUpdate(formId, { $set: { 'settings': formSettings } }, { new: true });
 
         if (result === null) {
             throw new Error('Form doesn\'t exists!', {

@@ -8,16 +8,34 @@ type FormFieldType = TextInputType | NumberInputType;
 
 export type FormType = {
     _id: string,
-    name: string,
-    isVisible: boolean,
-    isReadOnly: boolean,
+    settings: {
+        name: string,
+        isVisible: boolean,
+        isReadOnly: boolean,
+    },
     fields: FormFieldType[]
 }
 
+const FormSettingsSchema = new Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    isVisible: {
+        type: Boolean,
+        required: true,
+    },
+    isReadOnly: {
+        type: Boolean,
+        required: true,
+    },
+});
+
 const FormsSchema = new Schema({
-    name: String,
-    isVisible: Boolean,
-    isReadOnly: Boolean,
+    settings: {
+        type: FormSettingsSchema,
+        required: true,
+    },
     fields: [{
         type: Schema.Types.Mixed,
         enum: [
@@ -27,6 +45,6 @@ const FormsSchema = new Schema({
     }],
 });
 
-const Forms = model('Forms', FormsSchema);
+const Forms = model<FormType>('Forms', FormsSchema);
 
 export default Forms;

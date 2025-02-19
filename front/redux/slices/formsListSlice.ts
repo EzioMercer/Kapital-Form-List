@@ -1,12 +1,24 @@
 import { createAsyncThunk, createSlice, isRejected, PayloadAction } from '@reduxjs/toolkit';
 import FormType from '@/types/FormType';
-import { createForm, deleteForm, updateFormSettings } from '@/API';
+import { createField, createForm, deleteForm, updateFormSettings } from '@/API';
+import FormFieldType from '@/types/FormFieldType';
 
 const initialState: FormType[] = [];
 
 export const addForm = createAsyncThunk('addForm', createForm);
 export const removeForm = createAsyncThunk('removeForm', deleteForm);
-export const editForm = createAsyncThunk('editForm', updateFormSettings);
+export const editFormSettings = createAsyncThunk('editFormSettings', updateFormSettings);
+export const addField = createAsyncThunk(
+    'addField',
+    async ({ id, fieldData }: { id: FormType['_id']; fieldData: FormFieldType }) => {
+        const result = await createField({ id, fieldData });
+
+        return {
+            formId: id,
+            result,
+        };
+    },
+);
 
 const formsListSlice = createSlice({
     name: 'forms-list',
@@ -21,11 +33,19 @@ const formsListSlice = createSlice({
 
         builder.addCase(removeForm.fulfilled, (state, { payload }) => state.filter((form) => form._id !== payload));
 
-        builder.addCase(editForm.fulfilled, (state, { payload }) => {
+        builder.addCase(editFormSettings.fulfilled, (state, { payload }) => {
             const index = state.findIndex((form) => form._id === payload._id);
 
             if (index !== -1) {
-                state[index] = payload;
+                state[index].settings = payload.settings;
+            }
+        });
+
+        builder.addCase(addField.fulfilled, (state, { payload }) => {
+            const index = state.findIndex((form) => form._id === payload.formId);
+
+            if (index !== -1) {
+                state[index].fields.push(payload.result);
             }
         });
 

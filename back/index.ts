@@ -16,8 +16,6 @@ app.use(
     }));
 
 app.get('/forms', async (req: Request, res: Response) => {
-    // await new Promise(r => setTimeout(r, 4096));
-
     res.send(await DB.getAllForms());
 });
 
@@ -29,12 +27,12 @@ app.post('/form', async (req: Request, res: Response) => {
     formSettings.isReadOnly = (req.body.isReadOnly && true) ?? false;
 
     try {
-        const newForm = await DB.createForm({
-            settings: formSettings,
-            fields: [],
-        });
-
-        res.send(newForm);
+        res.send(
+            await DB.createForm({
+                settings: formSettings,
+                fields: [],
+            }),
+        );
     } catch (error) {
         res.statusMessage = error.message;
         res.status(error.cause).end();
@@ -55,27 +53,38 @@ app.delete('/form/:id', async (req: Request, res: Response) => {
 });
 
 app.patch('/form/:id/settings', async (req: Request, res: Response) => {
-    try {
-        const formId = req.params.id;
-        const updatedForm = await DB.updateFormSettings(formId, req.body);
+    const formSettings: FormType['settings'] = {
+        name: req.body.name,
+        isVisible: (req.body.isVisible && true) ?? false,
+        isReadOnly: (req.body.isReadOnly && true) ?? false,
+    };
 
-        res.send(updatedForm);
+    try {
+        res.send(
+            await DB.updateFormSettings(
+                req.params.id,
+                formSettings,
+            ),
+        );
     } catch (error) {
         res.statusMessage = error.message;
         res.status(error.cause).end();
     }
 });
 
-// app.patch('/form/:id/create-field', async (req: Request, res: Response) => {
-//     try {
-//         const updatedForm = await DB.updateForm(req.body);
-//
-//         res.send(updatedForm);
-//     } catch (error) {
-//         res.statusMessage = error.message;
-//         res.status(error.cause).end();
-//     }
-// });
+app.patch('/form/:id/create-field', async (req: Request, res: Response) => {
+    try {
+        res.send(
+            await DB.createField(
+                req.params.id,
+                req.body,
+            ),
+        );
+    } catch (error) {
+        res.statusMessage = error.message;
+        res.status(error.cause).end();
+    }
+});
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${ port }`);

@@ -1,9 +1,17 @@
 import type { Mongoose } from 'mongoose';
 import mongoose from 'mongoose';
-import type { FormType } from './models/Forms.ts';
+import type { FormFieldType, FormType } from './models/Forms.ts';
 import Forms from './models/Forms.ts';
 import ErrorCodes from '../utils/ErrorCodes.ts';
 import checkFormName from '../utils/checkFormName.ts';
+import TextInput from './models/TextInput.ts';
+
+const detectFieldModel = (fieldData: Omit<FormFieldType, '_id'>) => {
+    switch (fieldData.type) {
+        case 'text':
+            return new TextInput(fieldData);
+    }
+};
 
 class DB {
     private isConnected: boolean = false;
@@ -73,7 +81,7 @@ class DB {
 
         const oldForm = await Forms.findOne({ 'settings.name': formSettings.name });
 
-        if (oldForm !== null) {
+        if (oldForm !== null && !oldForm._id.equals(formId)) {
             throw new Error('Form with this name already exists!', {
                 cause: ErrorCodes.CONFLICT,
             });
@@ -88,6 +96,24 @@ class DB {
         }
 
         return result;
+    }
+
+    async createField(formId: FormType['_id'], fieldData: Omit<FormFieldType, '_id'>) {
+        const fieldModel = detectFieldModel(fieldData);
+
+        const result = await Forms.findByIdAndUpdate(formId, {
+            $push: {
+                'fields': fieldModel,
+            },
+        }, { new: true });
+
+        if (result === null) {
+            throw new Error('Form doesn\'t exists!', {
+                cause: ErrorCodes.NOT_ACCEPTABLE,
+            });
+        }
+
+        return fieldModel;
     }
 }
 

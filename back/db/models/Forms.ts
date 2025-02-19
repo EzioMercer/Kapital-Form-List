@@ -4,7 +4,7 @@ import TextInput from './TextInput.ts';
 import type { NumberInputType } from './NumberInput.ts';
 import NumberInput from './NumberInput.ts';
 
-type FormFieldType = TextInputType | NumberInputType;
+export type FormFieldType = TextInputType | NumberInputType;
 
 export type FormType = {
     _id: string,
@@ -45,6 +45,6 @@ const FormsSchema = new Schema({
     }],
 });
 
-const Forms = model<FormType>('Forms', FormsSchema);
+const Forms = model('Forms', FormsSchema);
 
 export default Forms;

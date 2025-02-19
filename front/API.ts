@@ -1,5 +1,6 @@
 import FormType from '@/types/FormType';
 import formDataToJSON from '@/utils/formDataToJSON';
+import FormFieldType from '@/types/FormFieldType';
 
 const protocol = 'http';
 const hostname = 'localhost';
@@ -32,9 +33,24 @@ export const updateFormSettings = ({
     id: FormType['_id'];
     settings: FormType['settings'];
 }): Promise<FormType> =>
-    myFetch(`${apiURL}/form${id}/settings`, {
+    myFetch(`${apiURL}/form/${id}/settings`, {
         method: 'PATCH',
         body: JSON.stringify(settings),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+export const createField = ({
+    id,
+    fieldData,
+}: {
+    id: FormType['_id'];
+    fieldData: FormFieldType;
+}): Promise<FormFieldType> =>
+    myFetch(`${apiURL}/form/${id}/create-field`, {
+        method: 'PATCH',
+        body: JSON.stringify(fieldData),
         headers: {
             'Content-Type': 'application/json',
         },

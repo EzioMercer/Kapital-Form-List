@@ -7,28 +7,27 @@ import Form from '@core/components/Form/Form';
 import formDataToJSON from '@/utils/formDataToJSON';
 import { useAppDispatch } from '@/redux/hooks';
 import FormTextInput from '@core/components/Form/FormTextInput/FormTextInput';
+import { addField } from '@/redux/slices/formsListSlice';
+import TextInputType from '@/types/TextInputType';
 
 type Props = {
     form: FormType;
 };
 
-const AddField = ({ form }: Props) => {
+const AddFieldForm = ({ form }: Props) => {
     const dispatch = useAppDispatch();
     const [isOpen, setIsOpen] = useState(false);
 
     const handleEditSubmit = (json: ReturnType<typeof formDataToJSON>) => {
-        // dispatch(
-        //     editForm({
-        //         ...form,
-        //         fields: [
-        //             ...form.fields,
-        //             {
-        //                 ...(json as unknown as FormFieldType),
-        //                 type: 'text',
-        //             },
-        //         ],
-        //     }),
-        // ).then(() => setIsOpen(false));
+        dispatch(
+            addField({
+                id: form._id,
+                fieldData: {
+                    ...(json as TextInputType),
+                    type: 'text',
+                },
+            }),
+        ).then(() => setIsOpen(false));
     };
 
     return (
@@ -47,4 +46,4 @@ const AddField = ({ form }: Props) => {
     );
 };
 
-export default AddField;
+export default AddFieldForm;

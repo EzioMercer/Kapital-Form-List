@@ -4,10 +4,10 @@ import { useState } from 'react';
 import Modal from '@core/components/Modal/Modal';
 import Form from '@core/components/Form/Form';
 import { useAppDispatch } from '@/redux/hooks';
-import { editForm } from '@/redux/slices/formsListSlice';
+import { editFormSettings } from '@/redux/slices/formsListSlice';
 import formDataToJSON from '@/utils/formDataToJSON';
 import FormType from '@/types/FormType';
-import AddField from '@/app/forms/_components/FormsList/FormsListItem/EditForm/AddField/AddField';
+import AddFieldForm from '@/app/forms/_components/FormsList/FormsListItem/EditForm/AddField/AddFieldForm';
 import FormFieldType from '@/types/FormFieldType';
 import FormTextInput from '@core/components/Form/FormTextInput/FormTextInput';
 
@@ -32,7 +32,7 @@ const EditForm = ({ form }: Props) => {
 
     const handleEditSubmit = (json: ReturnType<typeof formDataToJSON>) => {
         dispatch(
-            editForm({
+            editFormSettings({
                 id: form._id,
                 settings: {
                     ...(json as unknown as FormType['settings']),
@@ -40,6 +40,8 @@ const EditForm = ({ form }: Props) => {
             }),
         ).then(() => setShouldShowEditForm(false));
     };
+
+    console.log(1234, form);
 
     return (
         <>
@@ -51,12 +53,12 @@ const EditForm = ({ form }: Props) => {
                         <FormTextInput name={ 'name' } autoFocus={ true } defaultValue={ form.settings.name } />
 
                         <label>
-                            <input type="checkbox" defaultChecked={ form.settings.isVisible } />
+                            <input type="checkbox" name={ 'isVisible' } defaultChecked={ form.settings.isVisible } />
                             <span>Visible</span>
                         </label>
 
                         <label>
-                            <input type="checkbox" defaultChecked={ form.settings.isReadOnly } />
+                            <input type="checkbox" name={ 'isReadOnly' } defaultChecked={ form.settings.isReadOnly } />
                             <span>Readonly</span>
                         </label>
                     </fieldset>
@@ -66,7 +68,7 @@ const EditForm = ({ form }: Props) => {
 
                         {form.fields.map(chooseFormFieldType)}
 
-                        <AddField form={ form } />
+                        <AddFieldForm form={ form } />
                     </fieldset>
 
                     <button>Save</button>

@@ -1,32 +1,19 @@
-'use client';
-
 import FormType from '@/types/FormType';
-import { useAppDispatch } from '@/redux/hooks';
-import { removeForm } from '@/redux/slices/formsListSlice';
 import EditForm from './EditForm/EditForm';
 import ShowDetails from './ShowDetails/ShowDetails';
+import DeleteForm from './DeleteForm/DeleteForm';
 
-type Props = FormType;
-
-const FormsListItem = (form: Props) => {
-    const dispatch = useAppDispatch();
-
-    const handleDelete = () => {
-        const shouldDelete = confirm('Are you sure?');
-
-        if (!shouldDelete) return;
-
-        dispatch(removeForm(form._id));
-    };
-
-    return (
-        <div>
-            <span>{form.name}</span>
-            <button onClick={ handleDelete }>Delete</button>
-            <EditForm { ...form } />
-            <ShowDetails { ...form } />
-        </div>
-    );
+type Props = {
+    form: FormType;
 };
+
+const FormsListItem = ({ form }: Props) => (
+    <div>
+        <span>{form.name}</span>
+        <EditForm form={ form } />
+        <ShowDetails form={ form } />
+        <DeleteForm id={ form._id } />
+    </div>
+);
 
 export default FormsListItem;

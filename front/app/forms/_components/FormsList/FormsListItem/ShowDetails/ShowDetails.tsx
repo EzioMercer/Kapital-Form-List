@@ -5,9 +5,11 @@ import Modal from '@core/components/Modal/Modal';
 import Form from '@core/components/Form/Form';
 import FormType from '@/types/FormType';
 
-type Props = FormType;
+type Props = {
+    form: FormType;
+};
 
-const ShowDetails = (form: Props) => {
+const ShowDetails = ({ form }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const show = () => setIsOpen(true);

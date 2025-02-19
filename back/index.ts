@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 import express from 'express';
 import cors from 'cors';
 import DB from './db/DB.ts';
+import type { FormType } from './db/models/Forms.js';
 
 await DB.connect();
 
@@ -21,11 +22,12 @@ app.get('/forms', async (req: Request, res: Response) => {
 });
 
 app.post('/form', async (req: Request, res: Response) => {
-    const form = {} as any;
+    const form = {} as FormType;
 
     form.name = req.body.name ?? '';
     form.isVisible = (req.body.isVisible && true) ?? false;
-    form.isReadonly = (req.body.isReadonly && true) ?? false;
+    form.isReadOnly = (req.body.isReadOnly && true) ?? false;
+    form.fields = req.body.fields ?? [];
 
     try {
         const newForm = await DB.createForm(form);

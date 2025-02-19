@@ -7,10 +7,22 @@ import { useAppDispatch } from '@/redux/hooks';
 import { editForm } from '@/redux/slices/formsListSlice';
 import formDataToJSON from '@/utils/formDataToJSON';
 import FormType from '@/types/FormType';
+import AddField from '@/app/forms/_components/FormsList/FormsListItem/EditForm/AddField/AddField';
+import FormFieldType from '@/types/FormFieldType';
+import FormTextInput from '@core/components/Form/FormTextInput/FormTextInput';
 
-type Props = FormType;
+const chooseFormFieldType = (formField: FormFieldType, i: number) => {
+    switch (formField.type) {
+        case 'text':
+            return <FormTextInput key={ i } { ...formField } />;
+    }
+};
 
-const EditForm = (form: Props) => {
+type Props = {
+    form: FormType;
+};
+
+const EditForm = ({ form }: Props) => {
     const dispatch = useAppDispatch();
     const [shouldShowEditForm, setShouldShowEditForm] = useState(false);
 
@@ -32,7 +44,28 @@ const EditForm = (form: Props) => {
             <button onClick={ showEditForm }>Edit Form</button>
             <Modal title={ 'Edit Form' } isOpen={ shouldShowEditForm } onClose={ hideEditForm }>
                 <Form onSubmit={ handleEditSubmit }>
-                    <input autoFocus={ true } type="text" name="name" defaultValue={ form.name } />
+                    <fieldset>
+                        <legend>Form settings</legend>
+                        <input type="text" defaultValue={ form.name } />
+
+                        <label>
+                            <input type="checkbox" defaultChecked={ form.isVisible } />
+                            <span>Visible</span>
+                        </label>
+
+                        <label>
+                            <input type="checkbox" defaultChecked={ form.isReadOnly } />
+                            <span>Readonly</span>
+                        </label>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Form fields</legend>
+
+                        {form.fields.map(chooseFormFieldType)}
+
+                        <AddField form={ form } />
+                    </fieldset>
 
                     <button>Save</button>
                     <button onClick={ hideEditForm } type={ 'button' }>

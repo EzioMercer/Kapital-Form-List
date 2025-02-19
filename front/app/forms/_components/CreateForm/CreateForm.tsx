@@ -31,7 +31,7 @@ const CreateForm = () => {
                     </label>
 
                     <label>
-                        <input type="checkbox" name="isReadonly" />
+                        <input type="checkbox" name="isReadOnly" />
                         <span>Readonly</span>
                     </label>
 

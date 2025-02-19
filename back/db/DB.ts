@@ -63,20 +63,22 @@ class DB {
     }
 
     async updateForm(formData: FormType) {
-        const checkResults = checkFormName(formData.name);
-
-        if (checkResults.isValid === false) {
-            throw new Error(checkResults.message, {
-                cause: checkResults.code,
-            });
-        }
-
         const oldForm = await Forms.findOne({ name: formData.name });
 
-        if (oldForm !== null) {
-            throw new Error('Form with this name already exists!', {
-                cause: ErrorCodes.CONFLICT,
-            });
+        if (!oldForm._id.equals(formData._id)) {
+            const checkResults = checkFormName(formData.name);
+
+            if (checkResults.isValid === false) {
+                throw new Error(checkResults.message, {
+                    cause: checkResults.code,
+                });
+            }
+
+            if (oldForm !== null) {
+                throw new Error('Form with this name already exists!', {
+                    cause: ErrorCodes.CONFLICT,
+                });
+            }
         }
 
         const result = await Forms.findByIdAndUpdate(formData._id, formData, { new: true });

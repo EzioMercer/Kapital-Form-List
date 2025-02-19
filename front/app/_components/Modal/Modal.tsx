@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './Modal.module.scss';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 type ModalProps = {
@@ -12,18 +12,6 @@ type ModalProps = {
 };
 
 const Modal = ({ title, isOpen, onClose, children }: ModalProps) => {
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
-                onClose();
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, []);
-
     return (
         isOpen &&
         createPortal(

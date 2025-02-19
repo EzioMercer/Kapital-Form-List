@@ -1,10 +1,11 @@
 'use client';
 
+import styles from './EditForm.module.scss';
 import { useState } from 'react';
 import Modal from '@core/components/Modal/Modal';
 import Form from '@core/components/Form/Form';
 import { useAppDispatch } from '@/redux/hooks';
-import { editFormSettings } from '@/redux/slices/formsListSlice';
+import { editFormSettings, removeField } from '@/redux/slices/formsListSlice';
 import formDataToJSON from '@/utils/formDataToJSON';
 import FormType from '@/types/FormType';
 import AddFieldForm from '@/app/forms/_components/FormsList/FormsListItem/EditForm/AddField/AddFieldForm';
@@ -56,7 +57,28 @@ const EditForm = ({ form }: Props) => {
                     <fieldset>
                         <legend>Form fields</legend>
 
-                        {form.fields.map(chooseFormFieldType)}
+                        {form.fields.map((field, i) => {
+                            const Field = chooseFormFieldType(field)!;
+
+                            return (
+                                <div key={ i } className={ styles['form-fields'] }>
+                                    {Field}
+                                    <button
+                                        type={ 'button' }
+                                        onClick={ () => {
+                                            dispatch(
+                                                removeField({
+                                                    formId: form._id,
+                                                    fieldId: field._id,
+                                                }),
+                                            );
+                                        } }
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            );
+                        })}
 
                         <AddFieldForm form={ form } />
                     </fieldset>

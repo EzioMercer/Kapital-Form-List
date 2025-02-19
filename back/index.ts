@@ -52,6 +52,22 @@ app.delete('/form/:id', async (req: Request, res: Response) => {
     }
 });
 
+app.delete('/form/:formId/:fieldId', async (req: Request, res: Response) => {
+    const { formId, fieldId } = req.params;
+
+    try {
+        await DB.deleteField(formId, fieldId);
+
+        res.send(JSON.stringify({
+            formId,
+            fieldId,
+        }));
+    } catch (error) {
+        res.statusMessage = error.message;
+        res.status(error.cause).end();
+    }
+});
+
 app.patch('/form/:id/settings', async (req: Request, res: Response) => {
     const formSettings: FormType['settings'] = {
         name: req.body.name,

@@ -39,8 +39,8 @@ const ShowDetails = ({ form }: Props) => {
                     <fieldset>
                         <legend>Form fields</legend>
 
-                        {form.fields.map((formField, i) =>
-                            cloneElement(chooseFormFieldType(formField, i)!, {
+                        {form.fields.map((formField) =>
+                            cloneElement(chooseFormFieldType(formField)!, {
                                 disabled: true,
                             }),
                         )}

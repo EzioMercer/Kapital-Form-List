@@ -1,5 +1,4 @@
-import type { Mongoose } from 'mongoose';
-import mongoose from 'mongoose';
+import mongoose, { Mongoose, Types } from 'mongoose';
 import type { FormFieldType, FormType } from './models/Forms.ts';
 import Forms from './models/Forms.ts';
 import ErrorCodes from '../utils/ErrorCodes.ts';
@@ -62,6 +61,22 @@ class DB {
 
     async deleteForm(id: string) {
         const result = await Forms.findByIdAndDelete(id);
+
+        if (result === null) {
+            throw new Error('Form doesn\'t exists!', {
+                cause: ErrorCodes.NOT_ACCEPTABLE,
+            });
+        }
+    }
+
+    async deleteField(formId: string, fieldId: FormFieldType['_id']) {
+        const result = await Forms.findByIdAndUpdate(formId, {
+            $pull: {
+                fields: { _id: new Types.ObjectId(fieldId) },
+            },
+        }, {
+            new: true,
+        });
 
         if (result === null) {
             throw new Error('Form doesn\'t exists!', {

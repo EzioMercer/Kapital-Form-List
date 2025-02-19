@@ -26,6 +26,20 @@ export const deleteForm = (id: FormType['_id']): Promise<FormType['_id']> =>
         method: 'DELETE',
     });
 
+export const deleteField = ({
+    formId,
+    fieldId,
+}: {
+    formId: FormType['_id'];
+    fieldId: FormFieldType['_id'];
+}): Promise<{
+    formId: FormType['_id'];
+    fieldId: FormFieldType['_id'];
+}> =>
+    myFetch(`${apiURL}/form/${formId}/${fieldId}`, {
+        method: 'DELETE',
+    });
+
 export const updateFormSettings = ({
     id,
     settings,

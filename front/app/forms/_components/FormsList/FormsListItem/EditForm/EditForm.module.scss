@@ -1,0 +1,8 @@
+.form-fields {
+	display: flex;
+	gap: 16px;
+
+	:not(button) {
+		width: 100%;
+	}
+}

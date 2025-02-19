@@ -65,17 +65,17 @@ class DB {
     async updateForm(formData: FormType) {
         const withSameName = await Forms.findOne({ name: formData.name });
 
-        if (withSameName === null || withSameName._id.equals(formData._id)) {
-            const checkResults = checkFormName(formData.name);
-
-            if (checkResults.isValid === false) {
-                throw new Error(checkResults.message, {
-                    cause: checkResults.code,
-                });
-            }
-        } else {
+        if (withSameName !== null && !withSameName._id.equals(formData._id)) {
             throw new Error('Form with this name already exists!', {
                 cause: ErrorCodes.CONFLICT,
+            });
+        }
+
+        const checkResults = checkFormName(formData.name);
+
+        if (checkResults.isValid === false) {
+            throw new Error(checkResults.message, {
+                cause: checkResults.code,
             });
         }
 

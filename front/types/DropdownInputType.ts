@@ -4,6 +4,7 @@ export type DropdownInputOptionType = {
 };
 
 type DropdownInputType = {
+    _id: string;
     type: 'dropdown';
     name: string;
     options: DropdownInputOptionType[];

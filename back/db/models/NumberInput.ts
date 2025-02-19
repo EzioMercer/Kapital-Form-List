@@ -1,11 +1,13 @@
 import { model, Schema } from 'mongoose';
 
 export type NumberInputType = {
+    _id: string;
     type: 'number';
     name: string;
 };
 
 const NumberInputSchema = new Schema({
+    _id: String,
     type: {
         type: String,
         default: 'number',

@@ -10,6 +10,7 @@ type Props = {
 
 const handleSubmit = (e: FormEvent<HTMLFormElement>, cb: Props['onSubmit']) => {
     e.preventDefault();
+    e.stopPropagation();
 
     cb(formDataToJSON(new FormData(e.target as HTMLFormElement)));
 };

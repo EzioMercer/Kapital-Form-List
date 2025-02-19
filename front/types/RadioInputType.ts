@@ -4,6 +4,7 @@ type RadioInputOptionType = {
 };
 
 type RadioInputType = {
+    _id: string;
     type: 'radio';
     name: string;
     options: RadioInputOptionType[];

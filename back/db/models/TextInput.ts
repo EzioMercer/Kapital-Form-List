@@ -1,11 +1,13 @@
 import { model, Schema } from 'mongoose';
 
 export type TextInputType = {
+    _id: string;
     type: 'text';
     name: string;
 };
 
 const TextInputSchema = new Schema({
+    _id: String,
     type: {
         type: String,
         default: 'text',

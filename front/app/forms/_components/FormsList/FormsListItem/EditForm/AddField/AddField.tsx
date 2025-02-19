@@ -3,14 +3,35 @@
 import { useState } from 'react';
 import Modal from '@core/components/Modal/Modal';
 import FormType from '@/types/FormType';
-import { updateForm } from '@/API';
+import Form from '@core/components/Form/Form';
+import formDataToJSON from '@/utils/formDataToJSON';
+import { editForm } from '@/redux/slices/formsListSlice';
+import { useAppDispatch } from '@/redux/hooks';
+import FormFieldType from '@/types/FormFieldType';
+import FormTextInput from '@core/components/Form/FormTextInput/FormTextInput';
 
 type Props = {
     form: FormType;
 };
 
 const AddField = ({ form }: Props) => {
+    const dispatch = useAppDispatch();
     const [isOpen, setIsOpen] = useState(false);
+
+    const handleEditSubmit = (json: ReturnType<typeof formDataToJSON>) => {
+        dispatch(
+            editForm({
+                ...form,
+                fields: [
+                    ...form.fields,
+                    {
+                        ...(json as unknown as FormFieldType),
+                        type: 'text',
+                    },
+                ],
+            }),
+        ).then(() => setIsOpen(false));
+    };
 
     return (
         <>
@@ -19,25 +40,10 @@ const AddField = ({ form }: Props) => {
             </button>
 
             <Modal title={ 'Add Field' } isOpen={ isOpen } onClose={ () => setIsOpen(false) }>
-                <button
-                    onClick={ () => {
-                        const x = {
-                            ...form,
-                            fields: [
-                                ...form.fields,
-                                {
-                                    type: `text`,
-                                    name: `name`,
-                                },
-                            ],
-                        };
-
-                        // @ts-ignore
-                        updateForm(x);
-                    } }
-                >
-                    Add text input
-                </button>
+                <Form onSubmit={ handleEditSubmit }>
+                    <FormTextInput name={ 'name' } placeholder={ 'Enter input name' } autoFocus={ true } required={ true } />
+                    <button>Add text input</button>
+                </Form>
             </Modal>
         </>
     );

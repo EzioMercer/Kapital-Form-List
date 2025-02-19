@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import express from 'express';
 import cors from 'cors';
 import DB from './db/DB.ts';
-import type { FormType } from './db/models/Forms.js';
+import type { FormType } from './db/models/Forms.ts';
 
 await DB.connect();
 

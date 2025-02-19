@@ -46,7 +46,7 @@ const EditForm = ({ form }: Props) => {
                 <Form onSubmit={ handleEditSubmit }>
                     <fieldset>
                         <legend>Form settings</legend>
-                        <input type="text" defaultValue={ form.name } />
+                        <input type="text" name={ 'name' } autoFocus={ true } defaultValue={ form.name } />
 
                         <label>
                             <input type="checkbox" defaultChecked={ form.isVisible } />

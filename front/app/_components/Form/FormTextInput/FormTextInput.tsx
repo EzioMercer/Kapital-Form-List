@@ -4,9 +4,10 @@ type Props = {
     defaultValue?: string;
     autoFocus?: boolean;
     required?: boolean;
+    disabled?: boolean;
 };
 
-const FormTextInput = ({ name, placeholder, defaultValue, autoFocus, required }: Props) => (
+const FormTextInput = ({ name, placeholder, defaultValue, autoFocus, required, disabled }: Props) => (
     <input
         type="text"
         name={ name }
@@ -14,6 +15,7 @@ const FormTextInput = ({ name, placeholder, defaultValue, autoFocus, required }:
         defaultValue={ defaultValue }
         autoFocus={ autoFocus }
         required={ required }
+        disabled={ disabled }
     />
 );
 

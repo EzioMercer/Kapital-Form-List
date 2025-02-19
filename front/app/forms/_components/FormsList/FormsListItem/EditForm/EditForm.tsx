@@ -8,15 +8,8 @@ import { editFormSettings } from '@/redux/slices/formsListSlice';
 import formDataToJSON from '@/utils/formDataToJSON';
 import FormType from '@/types/FormType';
 import AddFieldForm from '@/app/forms/_components/FormsList/FormsListItem/EditForm/AddField/AddFieldForm';
-import FormFieldType from '@/types/FormFieldType';
 import FormTextInput from '@core/components/Form/FormTextInput/FormTextInput';
-
-const chooseFormFieldType = (formField: FormFieldType, i: number) => {
-    switch (formField.type) {
-        case 'text':
-            return <FormTextInput key={ i } { ...formField } />;
-    }
-};
+import chooseFormFieldType from '@/utils/chooseFormFieldType';
 
 type Props = {
     form: FormType;
@@ -27,7 +20,6 @@ const EditForm = ({ form }: Props) => {
     const [shouldShowEditForm, setShouldShowEditForm] = useState(false);
 
     const showEditForm = () => setShouldShowEditForm(true);
-
     const hideEditForm = () => setShouldShowEditForm(false);
 
     const handleEditSubmit = (json: ReturnType<typeof formDataToJSON>) => {
@@ -40,8 +32,6 @@ const EditForm = ({ form }: Props) => {
             }),
         ).then(() => setShouldShowEditForm(false));
     };
-
-    console.log(1234, form);
 
     return (
         <>
